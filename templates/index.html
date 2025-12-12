@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Intrusion Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Network Intrusion Detection System</h1>
+            </div>
+            <p class="subtitle">UNSW-NB15 Dataset - XGBoost Classifier</p>
+        </header>
+
+        <main>
+            <!-- Input Form -->
+            <div class="form-container">
+                <h2><i class="fas fa-sliders-h"></i> Input Features</h2>
+                
+                <!-- Sample Data Buttons -->
+                <div class="sample-buttons">
+                    <button type="button" id="load-normal" class="btn-sample btn-normal">
+                        <i class="fas fa-check-circle"></i> Load Normal Sample
+                    </button>
+                    <button type="button" id="load-attack" class="btn-sample btn-attack">
+                        <i class="fas fa-exclamation-triangle"></i> Load Attack Sample
+                    </button>
+                </div>
+                <p id="sample-info" class="sample-info"></p>
+                
+                <form id="prediction-form">
+                    <!-- Protocol, Service & State Selection -->
+                    <div class="form-section">
+                        <h3>Connection Info</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="proto">proto</label>
+                                <input type="text" id="proto" name="proto" value="tcp" list="proto-list" placeholder="Type protocol (e.g., tcp, udp)" autocomplete="off">
+                                <datalist id="proto-list">
+                                    <option value="3pc">
+                                    <option value="a/n">
+                                    <option value="aes-sp3-d">
+                                    <option value="any">
+                                    <option value="argus">
+                                    <option value="aris">
+                                    <option value="arp">
+                                    <option value="ax.25">
+                                    <option value="bbn-rcc">
+                                    <option value="bna">
+                                    <option value="br-sat-mon">
+                                    <option value="cbt">
+                                    <option value="cftp">
+                                    <option value="chaos">
+                                    <option value="compaq-peer">
+                                    <option value="cphb">
+                                    <option value="cpnx">
+                                    <option value="crtp">
+                                    <option value="crudp">
+                                    <option value="dcn">
+                                    <option value="ddp">
+                                    <option value="ddx">
+                                    <option value="dgp">
+                                    <option value="egp">
+                                    <option value="eigrp">
+                                    <option value="emcon">
+                                    <option value="encap">
+                                    <option value="etherip">
+                                    <option value="fc">
+                                    <option value="fire">
+                                    <option value="ggp">
+                                    <option value="gmtp">
+                                    <option value="gre">
+                                    <option value="hmp">
+                                    <option value="i-nlsp">
+                                    <option value="iatp">
+                                    <option value="ib">
+                                    <option value="icmp">
+                                    <option value="idpr">
+                                    <option value="idpr-cmtp">
+                                    <option value="idrp">
+                                    <option value="ifmp">
+                                    <option value="igmp">
+                                    <option value="igp">
+                                    <option value="il">
+                                    <option value="ip">
+                                    <option value="ipcomp">
+                                    <option value="ipcv">
+                                    <option value="ipip">
+                                    <option value="iplt">
+                                    <option value="ipnip">
+                                    <option value="ippc">
+                                    <option value="ipv6">
+                                    <option value="ipv6-frag">
+                                    <option value="ipv6-no">
+                                    <option value="ipv6-opts">
+                                    <option value="ipv6-route">
+                                    <option value="ipx-n-ip">
+                                    <option value="irtp">
+                                    <option value="isis">
+                                    <option value="iso-ip">
+                                    <option value="iso-tp4">
+                                    <option value="kryptolan">
+                                    <option value="l2tp">
+                                    <option value="larp">
+                                    <option value="leaf-1">
+                                    <option value="leaf-2">
+                                    <option value="merit-inp">
+                                    <option value="mfe-nsp">
+                                    <option value="mhrp">
+                                    <option value="micp">
+                                    <option value="mobile">
+                                    <option value="mtp">
+                                    <option value="mux">
+                                    <option value="narp">
+                                    <option value="netblt">
+                                    <option value="nsfnet-igp">
+                                    <option value="nvp">
+                                    <option value="ospf">
+                                    <option value="pgm">
+                                    <option value="pim">
+                                    <option value="pipe">
+                                    <option value="pnni">
+                                    <option value="pri-enc">
+                                    <option value="prm">
+                                    <option value="ptp">
+                                    <option value="pup">
+                                    <option value="pvp">
+                                    <option value="qnx">
+                                    <option value="rdp">
+                                    <option value="rsvp">
+                                    <option value="rtp">
+                                    <option value="rvd">
+                                    <option value="sat-expak">
+                                    <option value="sat-mon">
+                                    <option value="sccopmce">
+                                    <option value="scps">
+                                    <option value="sctp">
+                                    <option value="sdrp">
+                                    <option value="secure-vmtp">
+                                    <option value="sep">
+                                    <option value="skip">
+                                    <option value="sm">
+                                    <option value="smp">
+                                    <option value="snp">
+                                    <option value="sprite-rpc">
+                                    <option value="sps">
+                                    <option value="srp">
+                                    <option value="st2">
+                                    <option value="stp">
+                                    <option value="sun-nd">
+                                    <option value="swipe">
+                                    <option value="tcf">
+                                    <option value="tcp">
+                                    <option value="tlsp">
+                                    <option value="tp++">
+                                    <option value="trunk-1">
+                                    <option value="trunk-2">
+                                    <option value="ttp">
+                                    <option value="udp">
+                                    <option value="unas">
+                                    <option value="uti">
+                                    <option value="vines">
+                                    <option value="visa">
+                                    <option value="vmtp">
+                                    <option value="vrrp">
+                                    <option value="wb-expak">
+                                    <option value="wb-mon">
+                                    <option value="wsn">
+                                    <option value="xnet">
+                                    <option value="xns-idp">
+                                    <option value="xtp">
+                                    <option value="zero">
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="service">service</label>
+                                <select id="service" name="service">
+                                    <option value="-">- (none)</option>
+                                    <option value="http">http</option>
+                                    <option value="ftp">ftp</option>
+                                    <option value="ftp-data">ftp-data</option>
+                                    <option value="smtp">smtp</option>
+                                    <option value="ssh">ssh</option>
+                                    <option value="dns">dns</option>
+                                    <option value="pop3">pop3</option>
+                                    <option value="snmp">snmp</option>
+                                    <option value="ssl">ssl</option>
+                                    <option value="dhcp">dhcp</option>
+                                    <option value="irc">irc</option>
+                                    <option value="radius">radius</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">state</label>
+                                <select id="state" name="state">
+                                    <option value="FIN">FIN</option>
+                                    <option value="INT">INT</option>
+                                    <option value="CON">CON</option>
+                                    <option value="REQ">REQ</option>
+                                    <option value="RST">RST</option>
+                                    <option value="ACC">ACC</option>
+                                    <option value="CLO">CLO</option>
+                                    <option value="ECO">ECO</option>
+                                    <option value="PAR">PAR</option>
+                                    <option value="URN">URN</option>
+                                    <option value="no">no</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dur">dur</label>
+                                <input type="number" id="dur" name="dur" value="0.001" step="any" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bytes & Packets -->
+                    <div class="form-section">
+                        <h3>Traffic Volume</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sbytes">sbytes</label>
+                                <input type="number" id="sbytes" name="sbytes" value="100" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dbytes">dbytes</label>
+                                <input type="number" id="dbytes" name="dbytes" value="100" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="spkts">spkts</label>
+                                <input type="number" id="spkts" name="spkts" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dpkts">dpkts</label>
+                                <input type="number" id="dpkts" name="dpkts" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="smean">smean</label>
+                                <input type="number" id="smean" name="smean" value="100" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dmean">dmean</label>
+                                <input type="number" id="dmean" name="dmean" value="100" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="rate">rate</label>
+                                <input type="number" id="rate" name="rate" value="0" step="any" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TTL & Loss -->
+                    <div class="form-section">
+                        <h3>TTL & Loss</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sttl">sttl</label>
+                                <input type="number" id="sttl" name="sttl" value="64" min="0" max="255">
+                            </div>
+                            <div class="form-group">
+                                <label for="dttl">dttl</label>
+                                <input type="number" id="dttl" name="dttl" value="64" min="0" max="255">
+                            </div>
+                            <div class="form-group">
+                                <label for="sloss">sloss</label>
+                                <input type="number" id="sloss" name="sloss" value="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Load -->
+                    <div class="form-section">
+                        <h3>Network Load</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sload">sload</label>
+                                <input type="number" id="sload" name="sload" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dload">dload</label>
+                                <input type="number" id="dload" name="dload" value="0" step="any" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timing Metrics -->
+                    <div class="form-section">
+                        <h3>Timing Metrics</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sinpkt">sinpkt</label>
+                                <input type="number" id="sinpkt" name="sinpkt" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dinpkt">dinpkt</label>
+                                <input type="number" id="dinpkt" name="dinpkt" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="sjit">sjit</label>
+                                <input type="number" id="sjit" name="sjit" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="djit">djit</label>
+                                <input type="number" id="djit" name="djit" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="tcprtt">tcprtt</label>
+                                <input type="number" id="tcprtt" name="tcprtt" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="synack">synack</label>
+                                <input type="number" id="synack" name="synack" value="0" step="any" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ackdat">ackdat</label>
+                                <input type="number" id="ackdat" name="ackdat" value="0" step="any" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TCP Sequence -->
+                    <div class="form-section">
+                        <h3>TCP Sequence</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="stcpb">stcpb</label>
+                                <input type="number" id="stcpb" name="stcpb" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="dtcpb">dtcpb</label>
+                                <input type="number" id="dtcpb" name="dtcpb" value="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Tracking -->
+                    <div class="form-section">
+                        <h3>Connection Tracking</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="ct_state_ttl">ct_state_ttl</label>
+                                <input type="number" id="ct_state_ttl" name="ct_state_ttl" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_srv_src">ct_srv_src</label>
+                                <input type="number" id="ct_srv_src" name="ct_srv_src" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_srv_dst">ct_srv_dst</label>
+                                <input type="number" id="ct_srv_dst" name="ct_srv_dst" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_dst_ltm">ct_dst_ltm</label>
+                                <input type="number" id="ct_dst_ltm" name="ct_dst_ltm" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_src_ltm">ct_src_ltm</label>
+                                <input type="number" id="ct_src_ltm" name="ct_src_ltm" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_src_dport_ltm">ct_src_dport_ltm</label>
+                                <input type="number" id="ct_src_dport_ltm" name="ct_src_dport_ltm" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_dst_sport_ltm">ct_dst_sport_ltm</label>
+                                <input type="number" id="ct_dst_sport_ltm" name="ct_dst_sport_ltm" value="1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_dst_src_ltm">ct_dst_src_ltm</label>
+                                <input type="number" id="ct_dst_src_ltm" name="ct_dst_src_ltm" value="1" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-predict">
+                        <i class="fas fa-search"></i> Detect Intrusion
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-container" id="results-container">
+                <h2><i class="fas fa-chart-bar"></i> Prediction Result</h2>
+                
+                <div id="result-card" class="result-card hidden">
+                    <div id="result-icon" class="result-icon"></div>
+                    <div id="result-label" class="result-label"></div>
+                    <div id="result-confidence" class="result-confidence"></div>
+                    <div id="state-risk" class="state-risk"></div>
+                </div>
+
+                <div class="probability-section hidden" id="probability-section">
+                    <h3>Probability Distribution</h3>
+                    <div class="prob-bars">
+                        <div class="prob-item">
+                            <span class="prob-label">Normal</span>
+                            <div class="prob-bar-container">
+                                <div class="prob-bar normal" id="prob-normal"></div>
+                            </div>
+                            <span class="prob-value" id="prob-normal-value">0%</span>
+                        </div>
+                        <div class="prob-item">
+                            <span class="prob-label">Attack</span>
+                            <div class="prob-bar-container">
+                                <div class="prob-bar attack" id="prob-attack"></div>
+                            </div>
+                            <span class="prob-value" id="prob-attack-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing traffic...</p>
+                </div>
+
+                <div id="initial-message" class="initial-message">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Enter network traffic features and click "Detect Intrusion" to analyze.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Built with Flask & Machine Learning | UNSW-NB15 Intrusion Detection Model</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
